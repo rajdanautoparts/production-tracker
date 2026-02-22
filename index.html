@@ -1,818 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Production Tracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Tracker</title>
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#21808D">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1554/1554561.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#21808D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1554/1554561.png">
 
-<style>
-:root {
---color-white: rgba(255, 255, 255, 1);
---color-cream-50: rgba(252, 252, 249, 1);
---color-cream-100: rgba(255, 255, 253, 1);
---color-gray-200: rgba(245, 245, 245, 1);
---color-gray-300: rgba(167, 169, 169, 1);
---color-slate-500: rgba(98, 108, 113, 1);
---color-brown-600: rgba(94, 82, 64, 1);
---color-charcoal-700: rgba(31, 33, 33, 1);
---color-charcoal-800: rgba(38, 40, 40, 1);
---color-slate-900: rgba(19, 52, 59, 1);
---color-teal-300: rgba(50, 184, 198, 1);
---color-teal-400: rgba(45, 166, 178, 1);
---color-teal-500: rgba(33, 128, 141, 1);
---color-teal-600: rgba(29, 116, 128, 1);
---color-teal-700: rgba(26, 104, 115, 1);
---color-red-400: rgba(255, 84, 89, 1);
---color-red-500: rgba(192, 21, 47, 1);
---color-orange-400: rgba(230, 129, 97, 1);
---color-orange-500: rgba(168, 75, 47, 1);
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
 
---color-brown-600-rgb: 94, 82, 64;
---color-teal-500-rgb: 33, 128, 141;
---color-slate-900-rgb: 19, 52, 59;
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            --color-orange-400: rgba(230, 129, 97, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
 
---color-background: var(--color-cream-50);
---color-surface: var(--color-cream-100);
---color-text: var(--color-slate-900);
---color-text-secondary: var(--color-slate-500);
---color-primary: var(--color-teal-500);
---color-primary-hover: var(--color-teal-600);
---color-primary-active: var(--color-teal-700);
---color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
---color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
---color-border: rgba(var(--color-brown-600-rgb), 0.2);
---color-btn-primary-text: var(--color-cream-50);
---color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
---color-error: var(--color-red-500);
---color-success: var(--color-teal-500);
---color-warning: var(--color-orange-500);
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            --color-slate-900-rgb: 19, 52, 59;
 
---color-success-rgb: 33, 128, 141;
---color-error-rgb: 192, 21, 47;
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-btn-primary-text: var(--color-cream-50);
+            --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-error: var(--color-red-500);
+            --color-success: var(--color-teal-500);
+            --color-warning: var(--color-orange-500);
 
---radius-base: 8px;
---radius-lg: 12px;
---space-8: 8px;
---space-12: 12px;
---space-16: 16px;
---space-20: 20px;
---space-24: 24px;
---shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
---shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-}
+            --color-success-rgb: 33, 128, 141;
+            --color-error-rgb: 192, 21, 47;
 
-@media (prefers-color-scheme: dark) {
-:root {
---color-gray-400-rgb: 119, 124, 124;
---color-teal-300-rgb: 50, 184, 198;
---color-gray-300-rgb: 167, 169, 169;
---color-gray-200-rgb: 245, 245, 245;
+            --radius-base: 8px;
+            --radius-lg: 12px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+        }
 
---color-background: var(--color-charcoal-700);
---color-surface: var(--color-charcoal-800);
---color-text: var(--color-gray-200);
---color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
---color-primary: var(--color-teal-300);
---color-primary-hover: var(--color-teal-400);
---color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
---color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
---color-border: rgba(var(--color-gray-400-rgb), 0.3);
---color-error: var(--color-red-400);
---color-success: var(--color-teal-300);
---color-warning: var(--color-orange-400);
---color-btn-primary-text: var(--color-slate-900);
---color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-background: var(--color-charcoal-700);
+                --color-surface: var(--color-charcoal-800);
+                --color-text: var(--color-gray-200);
+                --color-text-secondary: rgba(167, 169, 169, 0.7);
+                --color-primary: var(--color-teal-300);
+                --color-primary-hover: var(--color-teal-400);
+                --color-secondary: rgba(119, 124, 124, 0.15);
+                --color-secondary-hover: rgba(119, 124, 124, 0.25);
+                --color-border: rgba(119, 124, 124, 0.3);
+                --color-error: var(--color-red-400);
+                --color-success: var(--color-teal-300);
+                --color-warning: var(--color-orange-400);
+                --color-btn-primary-text: var(--color-slate-900);
+                --color-card-border: rgba(119, 124, 124, 0.2);
+            }
+        }
 
---color-success-rgb: 50, 184, 198;
---color-error-rgb: 255, 84, 89;
-}
-}
-
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-
-body {
-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-background-color: var(--color-background);
-color: var(--color-text);
-padding: var(--space-20);
-line-height: 1.5;
-}
-
-.container {
-max-width: 1200px;
-margin: 0 auto;
-}
-
-h1 {
-font-size: 28px;
-margin-bottom: var(--space-24);
-color: var(--color-text);
-}
-
-.tabs {
-display: flex;
-gap: var(--space-8);
-margin-bottom: var(--space-24);
-border-bottom: 1px solid var(--color-border);
-}
-
-.tab {
-padding: var(--space-12) var(--space-20);
-background: none;
-border: none;
-cursor: pointer;
-color: var(--color-text-secondary);
-font-size: 15px;
-font-weight: 500;
-border-bottom: 2px solid transparent;
-transition: all 0.2s;
-}
-
-.tab:hover {
-color: var(--color-text);
-}
-
-.tab.active {
-color: var(--color-primary);
-border-bottom-color: var(--color-primary);
-}
-
-.tab-content {
-display: none;
-}
-
-.tab-content.active {
-display: block;
-}
-
-.card {
-background: var(--color-surface);
-border: 1px solid var(--color-card-border);
-border-radius: var(--radius-lg);
-padding: var(--space-20);
-margin-bottom: var(--space-20);
-box-shadow: var(--shadow-sm);
-}
-
-.form-group {
-margin-bottom: var(--space-16);
-}
-
-label {
-display: block;
-margin-bottom: var(--space-8);
-font-weight: 500;
-font-size: 14px;
-color: var(--color-text);
-}
-
-input, select {
-width: 100%;
-padding: var(--space-12);
-border: 1px solid var(--color-border);
-border-radius: var(--radius-base);
-background: var(--color-surface);
-color: var(--color-text);
-font-size: 14px;
-}
-
-input:focus, select:focus {
-outline: 2px solid var(--color-primary);
-border-color: var(--color-primary);
-}
-
-button {
-padding: var(--space-12) var(--space-24);
-background: var(--color-primary);
-color: var(--color-btn-primary-text);
-border: none;
-border-radius: var(--radius-base);
-cursor: pointer;
-font-size: 14px;
-font-weight: 500;
-transition: background 0.2s;
-}
-
-button:hover {
-background: var(--color-primary-hover);
-}
-
-button:disabled {
-opacity: 0.5;
-cursor: not-allowed;
-}
-
-.btn-secondary {
-background: var(--color-secondary);
-color: var(--color-text);
-}
-
-.btn-secondary:hover {
-background: var(--color-secondary-hover);
-}
-
-table {
-width: 100%;
-border-collapse: collapse;
-margin-top: var(--space-16);
-}
-
-th, td {
-padding: var(--space-12);
-text-align: left;
-border-bottom: 1px solid var(--color-border);
-}
-
-th {
-font-weight: 600;
-color: var(--color-text);
-background: var(--color-secondary);
-}
-
-td {
-color: var(--color-text);
-}
-
-.status-badge {
-display: inline-block;
-padding: 4px 12px;
-border-radius: 12px;
-font-size: 12px;
-font-weight: 500;
-}
-
-.status-above {
-background: rgba(var(--color-success-rgb), 0.15);
-color: var(--color-success);
-border: 1px solid rgba(var(--color-success-rgb), 0.25);
-}
-
-.status-below {
-background: rgba(var(--color-error-rgb), 0.15);
-color: var(--color-error);
-border: 1px solid rgba(var(--color-error-rgb), 0.25);
-}
-
-.status-on-target {
-background: var(--color-secondary);
-color: var(--color-text);
-border: 1px solid var(--color-border);
-}
-
-.grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-gap: var(--space-16);
-margin-bottom: var(--space-20);
-}
-
-.stat-card {
-background: var(--color-surface);
-border: 1px solid var(--color-card-border);
-border-radius: var(--radius-lg);
-padding: var(--space-20);
-box-shadow: var(--shadow-sm);
-}
-
-.stat-label {
-font-size: 13px;
-color: var(--color-text-secondary);
-margin-bottom: var(--space-8);
-}
-
-.stat-value {
-font-size: 28px;
-font-weight: 600;
-color: var(--color-text);
-}
-
-.manager-notice {
-background: rgba(var(--color-success-rgb), 0.1);
-border: 1px solid rgba(var(--color-success-rgb), 0.3);
-border-radius: var(--radius-base);
-padding: var(--space-12);
-margin-bottom: var(--space-20);
-font-size: 14px;
-color: var(--color-text);
-}
-
-.form-row {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: var(--space-16);
-}
-
-@media (max-width: 768px) {
-.form-row {
-grid-template-columns: 1fr;
-}
-}
-
-.delete-btn {
-background: var(--color-error);
-color: white;
-padding: 6px 12px;
-font-size: 13px;
-}
-
-.delete-btn:hover {
-opacity: 0.9;
-}
-
-#monthlyReport {
-max-width: 100%;
-overflow-x: auto;
-}
-
-.print-btn {
-margin-top: var(--space-16);
-background: var(--color-secondary);
-color: var(--color-text);
-}
-
-@media print {
-.tabs, .manager-notice, button, .delete-btn {
-display: none;
-}
-}
-</style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: var(--color-background); color: var(--color-text); padding: var(--space-20); line-height: 1.5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { font-size: 28px; margin-bottom: var(--space-24); color: var(--color-text); }
+        .tabs { display: flex; gap: var(--space-8); margin-bottom: var(--space-24); border-bottom: 1px solid var(--color-border); }
+        .tab { padding: var(--space-12) var(--space-20); background: none; border: none; cursor: pointer; color: var(--color-text-secondary); font-size: 15px; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .tab.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .card { background: var(--color-surface); border: 1px solid var(--color-card-border); border-radius: var(--radius-lg); padding: var(--space-20); margin-bottom: var(--space-20); box-shadow: var(--shadow-sm); }
+        .form-group { margin-bottom: var(--space-16); }
+        label { display: block; margin-bottom: var(--space-8); font-weight: 500; font-size: 14px; color: var(--color-text); }
+        input, select { width: 100%; padding: var(--space-12); border: 1px solid var(--color-border); border-radius: var(--radius-base); background: var(--color-surface); color: var(--color-text); font-size: 14px; }
+        button { padding: var(--space-12) var(--space-24); background: var(--color-primary); color: var(--color-btn-primary-text); border: none; border-radius: var(--radius-base); cursor: pointer; font-size: 14px; font-weight: 500; }
+        button:hover { background: var(--color-primary-hover); }
+        table { width: 100%; border-collapse: collapse; margin-top: var(--space-16); }
+        th, td { padding: var(--space-12); text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background: var(--color-secondary); }
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .status-above { background: rgba(33, 128, 141, 0.15); color: var(--color-success); border: 1px solid rgba(33, 128, 141, 0.25); }
+        .status-below { background: rgba(192, 21, 47, 0.15); color: var(--color-error); border: 1px solid rgba(192, 21, 47, 0.25); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-16); margin-bottom: var(--space-20); }
+        .stat-card { background: var(--color-surface); border: 1px solid var(--color-card-border); border-radius: var(--radius-lg); padding: var(--space-20); box-shadow: var(--shadow-sm); }
+        .stat-label { font-size: 13px; color: var(--color-text-secondary); margin-bottom: var(--space-8); }
+        .stat-value { font-size: 28px; font-weight: 600; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); }
+        @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+        .delete-btn { background: var(--color-error); color: white; padding: 6px 12px; font-size: 13px; }
+    </style>
 </head>
 <body>
 <div class="container">
-<h1>📊 Production Tracker</h1>
+    <h1>📊 Production Tracker</h1>
 
-<div class="tabs">
-<button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
-<button class="tab" onclick="switchTab('products')">Products</button>
-<button class="tab" onclick="switchTab('daily')">Daily Entry</button>
-<button class="tab" onclick="switchTab('reports')">Monthly Report</button>
-</div>
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
+        <button class="tab" onclick="switchTab('products')">Products</button>
+        <button class="tab" onclick="switchTab('daily')">Daily Entry</button>
+        <button class="tab" onclick="switchTab('reports')">Monthly Report</button>
+    </div>
 
-<div id="dashboard" class="tab-content active">
-<div class="grid">
-<div class="stat-card">
-<div class="stat-label">Total Workers</div>
-<div class="stat-value" id="totalWorkers">0</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Products Tracked</div>
-<div class="stat-value" id="totalProducts">0</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Today's Production</div>
-<div class="stat-value" id="todayProduction">0</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Today's Target</div>
-<div class="stat-value" id="todayTarget">0</div>
-</div>
-</div>
+    <div id="dashboard" class="tab-content active">
+        <div class="grid">
+            <div class="stat-card"><div class="stat-label">Total Workers</div><div class="stat-value" id="totalWorkers">0</div></div>
+            <div class="stat-card"><div class="stat-label">Products Tracked</div><div class="stat-value" id="totalProducts">0</div></div>
+            <div class="stat-card"><div class="stat-label">Today's Production</div><div class="stat-value" id="todayProduction">0</div></div>
+            <div class="stat-card"><div class="stat-label">Today's Target</div><div class="stat-value" id="todayTarget">0</div></div>
+        </div>
+        <div class="card"><h2>Today's Performance</h2><div id="todayPerformance"></div></div>
+    </div>
 
-<div class="card">
-<h2 style="margin-bottom: 16px;">Today's Performance</h2>
-<div id="todayPerformance"></div>
-</div>
-</div>
+    <div id="products" class="tab-content">
+        <div class="card">
+            <h2>Add New Product</h2>
+            <form id="productForm">
+                <div class="form-row">
+                    <div class="form-group"><label>Product Name</label><input type="text" id="productName" required></div>
+                    <div class="form-group"><label>Daily Target</label><input type="number" id="dailyTarget" min="1" required></div>
+                </div>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+        <div class="card"><h2>Product List</h2><div id="productList"></div></div>
+    </div>
 
-<div id="products" class="tab-content">
-<div class="manager-notice" id="managerNoticeProducts">
-📝 Manager Mode: You can add and manage products
-</div>
+    <div id="daily" class="tab-content">
+        <div class="card">
+            <h2>Record Daily Production</h2>
+            <form id="productionForm">
+                <div class="form-row">
+                    <div class="form-group"><label>Date</label><input type="date" id="entryDate" required></div>
+                    <div class="form-group"><label>Worker Name</label><input type="text" id="workerName" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Product</label><select id="productSelect" required><option value="">Select Product</option></select></div>
+                    <div class="form-group"><label>Pieces Produced</label><input type="number" id="piecesProduced" min="0" required></div>
+                </div>
+                <button type="submit">Record Production</button>
+            </form>
+        </div>
+        <div class="card"><h2>Recent Entries</h2><div id="recentEntries"></div></div>
+    </div>
 
-<div class="card">
-<h2 style="margin-bottom: 16px;">Add New Product</h2>
-<form id="productForm">
-<div class="form-row">
-<div class="form-group">
-<label for="productName">Product Name</label>
-<input type="text" id="productName" required>
-</div>
-<div class="form-group">
-<label for="dailyTarget">Daily Target (pieces)</label>
-<input type="number" id="dailyTarget" min="1" required>
-</div>
-</div>
-<button type="submit">Add Product</button>
-</form>
-</div>
-
-<div class="card">
-<h2 style="margin-bottom: 16px;">Product List</h2>
-<div id="productList"></div>
-</div>
-</div>
-
-<div id="daily" class="tab-content">
-<div class="manager-notice" id="managerNoticeDaily">
-📝 Manager Mode: You can enter production data
-</div>
-
-<div class="card">
-<h2 style="margin-bottom: 16px;">Record Daily Production</h2>
-<form id="productionForm">
-<div class="form-row">
-<div class="form-group">
-<label for="entryDate">Date</label>
-<input type="date" id="entryDate" required>
-</div>
-<div class="form-group">
-<label for="workerName">Worker Name</label>
-<input type="text" id="workerName" required>
-</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label for="productSelect">Product</label>
-<select id="productSelect" required>
-<option value="">Select Product</option>
-</select>
-</div>
-<div class="form-group">
-<label for="piecesProduced">Pieces Produced</label>
-<input type="number" id="piecesProduced" min="0" required>
-</div>
-</div>
-<button type="submit">Record Production</button>
-</form>
-</div>
-
-<div class="card">
-<h2 style="margin-bottom: 16px;">Recent Entries</h2>
-<div id="recentEntries"></div>
-</div>
-</div>
-
-<div id="reports" class="tab-content">
-<div class="card">
-<h2 style="margin-bottom: 16px;">Monthly Performance Report</h2>
-<div class="form-group">
-<label for="reportMonth">Select Month</label>
-<input type="month" id="reportMonth">
-<button onclick="generateReport()" style="margin-top: 12px;">Generate Report</button>
-</div>
-<div id="monthlyReport"></div>
-<button class="print-btn" onclick="window.print()">Print Report</button>
-</div>
-</div>
+    <div id="reports" class="tab-content">
+        <div class="card">
+            <h2>Monthly Report</h2>
+            <input type="month" id="reportMonth">
+            <button onclick="generateReport()">Generate Report</button>
+            <div id="monthlyReport"></div>
+        </div>
+    </div>
 </div>
 
 <script>
-// Data structures
-let products = [];
-let productionEntries = [];
-let isManager = true;
+    // FIREBASE CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLpRcgtN0Ts2yUMh-X1CCKy1uDtqncQFU",
+      authDomain: "production-tracker-70dca.firebaseapp.com",
+      projectId: "production-tracker-70dca",
+      storageBucket: "production-tracker-70dca.firebasestorage.app",
+      messagingSenderId: "884902656220",
+      appId: "1:884902656220:web:d01252f1f222db215f1c19",
+      measurementId: "G-Q0B6EH3ZET"
+    };
 
-// Initialize app
-function init() {
-// Service Worker Registration for Offline Use
-if ('serviceWorker' in navigator) {
-window.addEventListener('load', () => {
-navigator.serviceWorker.register('sw.js')
-.then(reg => console.log('Service Worker registered'))
-.catch(err => console.log('Service Worker failed', err));
-});
-}
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-loadData();
-updateDashboard();
-updateProductList();
-updateProductSelect();
-updateRecentEntries();
-setManagerMode();
+    let products = [];
+    let productionEntries = [];
 
-document.getElementById('entryDate').valueAsDate = new Date();
-const now = new Date();
-document.getElementById('reportMonth').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-}
+    async function init() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+        }
+        await loadData();
+        document.getElementById('entryDate').valueAsDate = new Date();
+    }
 
-// Manager mode control
-function setManagerMode() {
-const managerElements = document.querySelectorAll('.manager-notice');
-const forms = document.querySelectorAll('form');
+    // MULTIUSER CLOUD SYNC
+    async function saveData() {
+        const data = { products, entries: productionEntries, lastUpdated: new Date() };
+        try {
+            await db.collection("factoryData").doc("mainTracker").set(data);
+            console.log("Synced to cloud!");
+        } catch (e) { console.error("Sync error:", e); }
+    }
 
-if (!isManager) {
-managerElements.forEach(el => el.style.display = 'none');
-forms.forEach(form => {
-const buttons = form.querySelectorAll('button[type="submit"]');
-buttons.forEach(btn => btn.disabled = true);
-});
-}
-}
+    async function loadData() {
+        try {
+            const doc = await db.collection("factoryData").doc("mainTracker").get();
+            if (doc.exists) {
+                const data = doc.data();
+                products = data.products || [];
+                productionEntries = data.entries || [];
+                updateUI();
+            }
+        } catch (e) { console.error("Load error:", e); }
+    }
 
-// Tab switching
-function switchTab(tabName) {
-const tabs = document.querySelectorAll('.tab');
-const contents = document.querySelectorAll('.tab-content');
+    function updateUI() {
+        updateDashboard();
+        updateProductList();
+        updateProductSelect();
+        updateRecentEntries();
+    }
 
-tabs.forEach(tab => tab.classList.remove('active'));
-contents.forEach(content => content.classList.remove('active'));
+    // Tab Logic
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        if (tabName === 'dashboard') updateDashboard();
+    }
 
-const targetTab = Array.from(tabs).find(t => t.innerText.toLowerCase().includes(tabName));
-if(targetTab) targetTab.classList.add('active');
+    // Product Logic
+    document.getElementById('productForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        products.push({ id: Date.now(), name: document.getElementById('productName').value, dailyTarget: parseInt(document.getElementById('dailyTarget').value) });
+        await saveData();
+        updateUI();
+        e.target.reset();
+    });
 
-document.getElementById(tabName).classList.add('active');
+    function updateProductList() {
+        let html = '<table><tr><th>Name</th><th>Target</th><th>Action</th></tr>';
+        products.forEach(p => {
+            html += `<tr><td>${p.name}</td><td>${p.dailyTarget}</td><td><button class="delete-btn" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`;
+        });
+        document.getElementById('productList').innerHTML = html + '</table>';
+    }
 
-if (tabName === 'dashboard') {
-updateDashboard();
-}
-}
+    async function deleteProduct(id) {
+        products = products.filter(p => p.id !== id);
+        await saveData();
+        updateUI();
+    }
 
-// Product management
-document.getElementById('productForm').addEventListener('submit', (e) => {
-e.preventDefault();
-if (!isManager) return;
+    function updateProductSelect() {
+        const select = document.getElementById('productSelect');
+        select.innerHTML = '<option value="">Select Product</option>';
+        products.forEach(p => select.innerHTML += `<option value="${p.id}">${p.name}</option>`);
+    }
 
-const product = {
-id: Date.now(),
-name: document.getElementById('productName').value,
-dailyTarget: parseInt(document.getElementById('dailyTarget').value)
-};
+    // Production Logic
+    document.getElementById('productionForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const pId = parseInt(document.getElementById('productSelect').value);
+        const product = products.find(p => p.id === pId);
+        productionEntries.push({
+            date: document.getElementById('entryDate').value,
+            worker: document.getElementById('workerName').value,
+            productName: product.name,
+            target: product.dailyTarget,
+            produced: parseInt(document.getElementById('piecesProduced').value)
+        });
+        await saveData();
+        updateUI();
+        e.target.reset();
+        document.getElementById('entryDate').valueAsDate = new Date();
+    });
 
-products.push(product);
-saveData();
-updateProductList();
-updateProductSelect();
-e.target.reset();
-});
+    function updateRecentEntries() {
+        let html = '<table><tr><th>Date</th><th>Worker</th><th>Product</th><th>Produced</th></tr>';
+        [...productionEntries].reverse().slice(0, 5).forEach(e => {
+            html += `<tr><td>${e.date}</td><td>${e.worker}</td><td>${e.productName}</td><td>${e.produced}</td></tr>`;
+        });
+        document.getElementById('recentEntries').innerHTML = html + '</table>';
+    }
 
-function updateProductList() {
-const container = document.getElementById('productList');
+    function updateDashboard() {
+        const today = new Date().toISOString().split('T')[0];
+        const todayEntries = productionEntries.filter(e => e.date === today);
+        document.getElementById('totalWorkers').innerText = [...new Set(productionEntries.map(e => e.worker))].length;
+        document.getElementById('totalProducts').innerText = products.length;
+        document.getElementById('todayProduction').innerText = todayEntries.reduce((s, e) => s + e.produced, 0);
+        document.getElementById('todayTarget').innerText = todayEntries.reduce((s, e) => s + e.target, 0);
+    }
 
-if (products.length === 0) {
-container.innerHTML = '<p style="color: var(--color-text-secondary);">No products added yet.</p>';
-return;
-}
-
-let html = '<table><thead><tr><th>Product Name</th><th>Daily Target</th><th>Action</th></tr></thead><tbody>';
-
-products.forEach(product => {
-html += `
-<tr>
-<td>${product.name}</td>
-<td>${product.dailyTarget} pieces</td>
-<td><button class="delete-btn" onclick="deleteProduct(${product.id})" ${!isManager ? 'disabled' : ''}>Delete</button></td>
-</tr>
-`;
-});
-
-html += '</tbody></table>';
-container.innerHTML = html;
-}
-
-function deleteProduct(id) {
-if (!isManager) return;
-if (confirm('Are you sure you want to delete this product?')) {
-products = products.filter(p => p.id !== id);
-saveData();
-updateProductList();
-updateProductSelect();
-}
-}
-
-function updateProductSelect() {
-const select = document.getElementById('productSelect');
-select.innerHTML = '<option value="">Select Product</option>';
-
-products.forEach(product => {
-const option = document.createElement('option');
-option.value = product.id;
-option.textContent = `${product.name} (Target: ${product.dailyTarget}/day)`;
-select.appendChild(option);
-});
-}
-
-// Production entry
-document.getElementById('productionForm').addEventListener('submit', (e) => {
-e.preventDefault();
-if (!isManager) return;
-
-const productId = parseInt(document.getElementById('productSelect').value);
-const product = products.find(p => p.id === productId);
-
-if (!product) return;
-
-const entry = {
-id: Date.now(),
-date: document.getElementById('entryDate').value,
-worker: document.getElementById('workerName').value,
-productId: productId,
-productName: product.name,
-target: product.dailyTarget,
-produced: parseInt(document.getElementById('piecesProduced').value)
-};
-
-productionEntries.push(entry);
-saveData();
-updateRecentEntries();
-updateDashboard();
-e.target.reset();
-document.getElementById('entryDate').valueAsDate = new Date();
-});
-
-function updateRecentEntries() {
-const container = document.getElementById('recentEntries');
-
-if (productionEntries.length === 0) {
-container.innerHTML = '<p style="color: var(--color-text-secondary);">No production entries yet.</p>';
-return;
-}
-
-const recent = [...productionEntries].reverse().slice(0, 10);
-
-let html = '<table><thead><tr><th>Date</th><th>Worker</th><th>Product</th><th>Target</th><th>Produced</th><th>Status</th></tr></thead><tbody>';
-
-recent.forEach(entry => {
-const variance = entry.produced - entry.target;
-const percentage = ((entry.produced / entry.target) * 100).toFixed(1);
-let statusClass = 'status-on-target';
-let statusText = 'On Target';
-
-if (variance > 0) {
-statusClass = 'status-above';
-statusText = `+${variance} (${percentage}%)`;
-} else if (variance < 0) {
-statusClass = 'status-below';
-statusText = `${variance} (${percentage}%)`;
-} else {
-statusText = `100%`;
-}
-
-html += `
-<tr>
-<td>${entry.date}</td>
-<td>${entry.worker}</td>
-<td>${entry.productName}</td>
-<td>${entry.target}</td>
-<td>${entry.produced}</td>
-<td><span class="status-badge ${statusClass}">${statusText}</span></td>
-</tr>
-`;
-});
-
-html += '</tbody></table>';
-container.innerHTML = html;
-}
-
-// Dashboard
-function updateDashboard() {
-const uniqueWorkers = [...new Set(productionEntries.map(e => e.worker))];
-document.getElementById('totalWorkers').textContent = uniqueWorkers.length;
-document.getElementById('totalProducts').textContent = products.length;
-
-const today = new Date().toISOString().split('T')[0];
-const todayEntries = productionEntries.filter(e => e.date === today);
-
-const todayProd = todayEntries.reduce((sum, e) => sum + e.produced, 0);
-const todayTar = todayEntries.reduce((sum, e) => sum + e.target, 0);
-
-document.getElementById('todayProduction').textContent = todayProd;
-document.getElementById('todayTarget').textContent = todayTar;
-
-const container = document.getElementById('todayPerformance');
-
-if (todayEntries.length === 0) {
-container.innerHTML = '<p style="color: var(--color-text-secondary);">No production entries for today.</p>';
-return;
-}
-
-const workerStats = {};
-todayEntries.forEach(entry => {
-if (!workerStats[entry.worker]) {
-workerStats[entry.worker] = { produced: 0, target: 0 };
-}
-workerStats[entry.worker].produced += entry.produced;
-workerStats[entry.worker].target += entry.target;
-});
-
-let html = '<table><thead><tr><th>Worker</th><th>Target</th><th>Produced</th><th>Performance</th></tr></thead><tbody>';
-
-Object.keys(workerStats).forEach(worker => {
-const stats = workerStats[worker];
-const variance = stats.produced - stats.target;
-const percentage = ((stats.produced / stats.target) * 100).toFixed(1);
-let statusClass = 'status-on-target';
-let statusText = '100%';
-
-if (variance > 0) {
-statusClass = 'status-above';
-statusText = `${percentage}% (+${variance})`;
-} else if (variance < 0) {
-statusClass = 'status-below';
-statusText = `${percentage}% (${variance})`;
-}
-
-html += `
-<tr>
-<td>${worker}</td>
-<td>${stats.target}</td>
-<td>${stats.produced}</td>
-<td><span class="status-badge ${statusClass}">${statusText}</span></td>
-</tr>
-`;
-});
-
-html += '</tbody></table>';
-container.innerHTML = html;
-}
-
-// Monthly report
-function generateReport() {
-const monthInput = document.getElementById('reportMonth').value;
-if (!monthInput) return;
-
-const [year, month] = monthInput.split('-');
-const monthEntries = productionEntries.filter(e => {
-const entryDate = new Date(e.date);
-return entryDate.getFullYear() === parseInt(year) &&
-(entryDate.getMonth() + 1) === parseInt(month);
-});
-
-const container = document.getElementById('monthlyReport');
-
-if (monthEntries.length === 0) {
-container.innerHTML = '<p style="color: var(--color-text-secondary); margin-top: 16px;">No production data for selected month.</p>';
-return;
-}
-
-const workerStats = {};
-monthEntries.forEach(entry => {
-if (!workerStats[entry.worker]) {
-workerStats[entry.worker] = {
-produced: 0,
-target: 0,
-entries: 0,
-byProduct: {}
-};
-}
-workerStats[entry.worker].produced += entry.produced;
-workerStats[entry.worker].target += entry.target;
-workerStats[entry.worker].entries += 1;
-});
-
-let html = `<h3 style="margin-top: 24px;">Monthly Report - ${new Date(year, month - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h3>`;
-html += '<table style="margin-top: 16px;"><thead><tr><th>Worker</th><th>Total Target</th><th>Total Produced</th><th>Variance</th><th>Performance</th><th>Days Worked</th></tr></thead><tbody>';
-
-Object.keys(workerStats).sort().forEach(worker => {
-const stats = workerStats[worker];
-const variance = stats.produced - stats.target;
-const percentage = ((stats.produced / stats.target) * 100).toFixed(1);
-let statusClass = 'status-on-target';
-
-if (variance > 0) {
-statusClass = 'status-above';
-} else if (variance < 0) {
-statusClass = 'status-below';
-}
-
-html += `<tr><td><strong>${worker}</strong></td><td>${stats.target}</td><td>${stats.produced}</td><td>${variance > 0 ? '+' : ''}${variance}</td><td><span class="status-badge ${statusClass}">${percentage}%</span></td><td>${stats.entries}</td></tr>`;
-});
-
-html += '</tbody></table>';
-container.innerHTML = html;
-}
-
-// DATA PERSISTENCE - Fixed for permanent storage
-function saveData() {
-const data = {
-products: products,
-entries: productionEntries
-};
-try {
-// Changed from sessionStorage to localStorage for permanent storage
-localStorage.setItem('productionData', JSON.stringify(data));
-} catch (e) {
-console.log('Storage error:', e);
-}
-}
-
-function loadData() {
-try {
-// Changed from sessionStorage to localStorage
-const stored = localStorage.getItem('productionData');
-if (stored) {
-const data = JSON.parse(stored);
-products = data.products || [];
-productionEntries = data.entries || [];
-}
-} catch (e) {
-console.log('Load error:', e);
-}
-}
-
-
-init();
+    init();
 </script>
 </body>
 </html>
-
-
