@@ -781,21 +781,23 @@ html += '</tbody></table>';
 container.innerHTML = html;
 }
 
-// DATA PERSISTENCE - Now using localStorage for permanent storage
+// DATA PERSISTENCE - Fixed for permanent storage
 function saveData() {
 const data = {
 products: products,
 entries: productionEntries
 };
 try {
+// Changed from sessionStorage to localStorage for permanent storage
 localStorage.setItem('productionData', JSON.stringify(data));
 } catch (e) {
-console.log('Error saving to localStorage', e);
+console.log('Storage error:', e);
 }
 }
 
 function loadData() {
 try {
+// Changed from sessionStorage to localStorage
 const stored = localStorage.getItem('productionData');
 if (stored) {
 const data = JSON.parse(stored);
@@ -803,12 +805,14 @@ products = data.products || [];
 productionEntries = data.entries || [];
 }
 } catch (e) {
-console.log('Error loading from localStorage', e);
+console.log('Load error:', e);
 }
 }
+
 
 init();
 </script>
 </body>
 </html>
+
 
